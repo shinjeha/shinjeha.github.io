@@ -1,1 +1,0 @@
-# shinjeha.github.io
