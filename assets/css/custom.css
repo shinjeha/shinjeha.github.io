@@ -17,6 +17,7 @@ body {
     /* HTML/BODY에 스크롤바 생기지 않도록 */
     font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     /* Windows 98 유사 폰트 계열 */
+    background-color: #00807F;
 }
 
 body {
