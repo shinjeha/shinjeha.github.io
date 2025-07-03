@@ -1,0 +1,79 @@
+---
+layout: default
+title: 태그 목록
+permalink: /tags/
+---
+
+<div class="window" style="margin-bottom: 20px;">
+    <div class="title-bar">
+        <div class="title-bar-text">태그 목록</div>
+    </div>
+    <div class="window-body">
+        {% assign tags = site.tags | sort %} {# 모든 태그를 가져와 정렬 #}
+        {% if tags.size > 0 %}
+        <p>총 {{ tags.size }}개의 태그가 있습니다.</p>
+        <div class="field-row" style="flex-wrap: wrap;"> {# 태그들을 유연하게 줄바꿈 #}
+            {% for tag in tags %}
+            <a href="#{{ tag | first | slugify }}" class="tag-link">
+                <button class="tag-button">
+                    {{ tag | first }} ({{ tag | last | size }})
+                </button>
+            </a>
+            {% endfor %}
+        </div>
+        <hr class="clear-fix" style="margin: 15px 0;"> {# 98.css의 hr은 마진이 커서 조절 #}
+        {% else %}
+        <p>아직 태그가 없습니다.</p>
+        {% endif %}
+
+        {% for tag in tags %}
+        <div class="window" style="margin-top: 20px;">
+            <div class="title-bar">
+                <div class="title-bar-text" id="{{ tag | first | slugify }}">
+                    태그: {{ tag | first }} ({{ tag | last | size }}개의 포스트)
+                </div>
+            </div>
+            <div class="window-body">
+                <ul style="list-style: disc; margin-left: 20px;"> {# 목록 스타일 및 들여쓰기 #}
+                    {% for post in tag | last %}
+                    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date:
+                            "%Y-%m-%d" }}</small></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* 태그 버튼 스타일 (98.css의 button 클래스를 활용) */
+    .tag-link {
+        text-decoration: none;
+        /* 링크 밑줄 제거 */
+        margin: 5px;
+        /* 버튼 사이 간격 */
+        display: inline-block;
+        /* 버튼 정렬을 위해 */
+    }
+
+    .tag-button {
+        /* 98.css의 기본 버튼 스타일 활용 */
+        padding: 5px 10px;
+    }
+
+    .field-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .clear-fix {
+        /* 98.css의 hr 스타일을 커스텀 */
+        border: 0;
+        height: 1px;
+        background-color: #808080;
+        /* 회색 선 */
+        margin: 10px 0;
+    }
+</style>

@@ -1,18 +1,73 @@
 ---
 layout: default
-title: 카테고리
+title: 카테고리 목록
 permalink: /categories/
 ---
 
-<h1 class="window-title">카테고리 목록</h1>
+<div class="window" style="margin-bottom: 20px;">
+    <div class="title-bar">
+        <div class="title-bar-text">카테고리 목록</div>
+    </div>
+    <div class="window-body">
+        {% assign categories = site.categories | sort %} {# 모든 카테고리를 가져와 정렬 #}
+        {% if categories.size > 0 %}
+        <p>총 {{ categories.size }}개의 카테고리가 있습니다.</p>
+        <div class="field-row" style="flex-wrap: wrap;"> {# 카테고리들을 유연하게 줄바꿈 #}
+            {% for category in categories %}
+            <a href="#{{ category | first | slugify }}" class="category-link">
+                <button class="category-button">
+                    {{ category | first }} ({{ category | last | size }})
+                </button>
+            </a>
+            {% endfor %}
+        </div>
+        <hr class="clear-fix" style="margin: 15px 0;">
+        {% else %}
+        <p>아직 카테고리가 없습니다.</p>
+        {% endif %}
 
-<div class="window-body">
-    {% for category in site.categories %}
-    <h2 id="{{ category | first | slugify }}">{{ category | first }}</h2>
-    <ul>
-        {% for post in category | last %}
-        <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+        {% for category in categories %}
+        <div class="window" style="margin-top: 20px;">
+            <div class="title-bar">
+                <div class="title-bar-text" id="{{ category | first | slugify }}">
+                    카테고리: {{ category | first }} ({{ category | last | size }}개의 포스트)
+                </div>
+            </div>
+            <div class="window-body">
+                <ul style="list-style: disc; margin-left: 20px;">
+                    {% for post in category | last %}
+                    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date:
+                            "%Y-%m-%d" }}</small></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-    {% endfor %}
+    </div>
 </div>
+
+<style>
+    /* 카테고리 버튼 스타일 (태그 페이지와 유사) */
+    .category-link {
+        text-decoration: none;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .category-button {
+        padding: 5px 10px;
+    }
+
+    .field-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .clear-fix {
+        border: 0;
+        height: 1px;
+        background-color: #808080;
+        margin: 10px 0;
+    }
+</style>
