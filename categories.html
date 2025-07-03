@@ -6,68 +6,161 @@ permalink: /categories/
 
 <div class="window" style="margin-bottom: 20px;">
     <div class="title-bar">
-        <div class="title-bar-text">카테고리 목록</div>
+        <div class="title-bar-text">카테고리 : <span id="categoryName"></span></div>
+        <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close"></button>
+        </div>
     </div>
     <div class="window-body">
-        {% assign categories = site.categories | sort %} {# 모든 카테고리를 가져와 정렬 #}
-        {% if categories.size > 0 %}
-        <p>총 {{ categories.size }}개의 카테고리가 있습니다.</p>
-        <div class="field-row" style="flex-wrap: wrap;"> {# 카테고리들을 유연하게 줄바꿈 #}
-            {% for category in categories %}
-            <a href="#{{ category | first | slugify }}" class="category-link">
-                <button class="category-button">
-                    {{ category | first }} ({{ category | last | size }})
-                </button>
-            </a>
-            {% endfor %}
+        <div class="sunken-panel">
+        <table class="interactive">
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>날짜</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>aa</td>
+                    <td>bb</td>
+                </tr>
+                <tr>
+                    <td>cc</td>
+                    <td>dd</td>
+                </tr>
+            </tbody>
+        </table>
         </div>
-        <hr class="clear-fix" style="margin: 15px 0;">
-        {% else %}
-        <p>아직 카테고리가 없습니다.</p>
-        {% endif %}
-
+        <!-- {% assign categories = site.categories | sort %}
+    {% if categories.size > 0 %}
+      <p>총 {{ categories.size }}개의 카테고리가 있습니다.</p>
+      <div class="field-row" style="flex-wrap: wrap;">
+        <button class="category-button active" data-category="all">모든 카테고리</button> {# "모든 카테고리" 버튼 추가 #}
         {% for category in categories %}
-        <div class="window" style="margin-top: 20px;">
-            <div class="title-bar">
-                <div class="title-bar-text" id="{{ category | first | slugify }}">
-                    카테고리: {{ category | first }} ({{ category | last | size }}개의 포스트)
+          <button class="category-button" data-category="{{ category | first | slugify }}">
+            {{ category | first }} ({{ category | last | size }})
+          </button>
+        {% endfor %}
+      </div>
+      <hr class="clear-fix" style="margin: 15px 0;">
+    {% else %}
+      <p>아직 카테고리가 없습니다.</p>
+    {% endif %}
+
+    {# 모든 카테고리 포스트 목록 (초기에는 항상 보임) #}
+    <div class="category-section" data-category="all">
+      <div class="window" style="margin-top: 20px;">
+        <div class="title-bar">
+          <div class="title-bar-text">모든 포스트</div>
+        </div>
+        <div class="window-body">
+          <ul style="list-style: disc; margin-left: 20px;">
+            {% assign all_posts = site.posts | sort: "date" | reverse %}
+            {% for post in all_posts %}
+              <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date: "%Y-%m-%d" }}</small></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div> -->
+
+        <div class="category-section" data-category="{{ category | first | slugify }}">
+            <div class="window" style="margin-top: 20px;">
+                <div class="title-bar">
+                    <div class="title-bar-text">
+                        카테고리: {{ category | first }} ({{ category | last | size }}개의 포스트)
+                    </div>
+                </div>
+                <div class="window-body">
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        {% for post in category | last %}
+                        <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date:
+                                "%Y-%m-%d" }}</small></li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
-            <div class="window-body">
-                <ul style="list-style: disc; margin-left: 20px;">
-                    {% for post in category | last %}
-                    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date:
-                            "%Y-%m-%d" }}</small></li>
-                    {% endfor %}
-                </ul>
-            </div>
         </div>
-        {% endfor %}
+        <!-- {% for category in categories %}
+      <div class="category-section" data-category="{{ category | first | slugify }}" style="display: none;"> {# 초기에는 숨김 #}
+        <div class="window" style="margin-top: 20px;">
+          <div class="title-bar">
+            <div class="title-bar-text">
+              카테고리: {{ category | first }} ({{ category | last | size }}개의 포스트)
+            </div>
+          </div>
+          <div class="window-body">
+            <ul style="list-style: disc; margin-left: 20px;">
+              {% for post in category | last %}
+                <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date: "%Y-%m-%d" }}</small></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endfor %} -->
     </div>
 </div>
 
-<style>
-    /* 카테고리 버튼 스타일 (태그 페이지와 유사) */
-    .category-link {
-        text-decoration: none;
-        margin: 5px;
-        display: inline-block;
-    }
+<script>
+    window.addEventListener('hashchange', function () {
+        currentHash();
+    });
 
-    .category-button {
-        padding: 5px 10px;
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        currentHash();
 
-    .field-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-    }
+        const categoryButtons = document.querySelectorAll('.category-button');
+        const categorySections = document.querySelectorAll('.category-section');
 
-    .clear-fix {
-        border: 0;
-        height: 1px;
-        background-color: #808080;
-        margin: 10px 0;
+        function showCategory(selectedCategory) {
+            categorySections.forEach(section => {
+                if (section.dataset.category === selectedCategory || selectedCategory === 'all') {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function setActiveButton(selectedCategory) {
+            categoryButtons.forEach(button => {
+                if (button.dataset.category === selectedCategory) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const selectedCategory = this.dataset.category;
+                showCategory(selectedCategory);
+                setActiveButton(selectedCategory);
+                // URL 해시 업데이트 (선택 사항, 브라우저 뒤로가기/앞으로가기 가능)
+                window.location.hash = selectedCategory;
+            });
+        });
+
+        // **이 부분이 중요합니다: 페이지 로드 시 URL 해시를 확인합니다.**
+        const initialHash = window.location.hash.substring(1); // URL에서 '#'을 제거합니다.
+        if (initialHash && Array.from(categoryButtons).some(btn => btn.dataset.category === initialHash)) {
+            // 해시값이 있고, 해당 카테고리 버튼이 존재하면 해당 카테고리를 보여줍니다.
+            showCategory(initialHash);
+            setActiveButton(initialHash);
+        } else {
+            // 해시값이 없거나 유효하지 않으면 '모든 카테고리'를 보여줍니다.
+            showCategory('all');
+            setActiveButton('all');
+        }
+    });
+
+    function currentHash() {
+        const hash = window.location.hash.replaceAll('#', '');
+        document.getElementById('categoryName').innerText = hash;
     }
-</style>
+</script>
