@@ -1,16 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | deafault: site.lang | default: " en" }}">
+<html lang="{{ page.lang | default: site.lang | default: " en" }}">
+{% include head.html %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/assets/css/98.css">
-</head>
-
-<body>
-    <main style=" display: flex; height: 100vh;">
-        <aside style="width: 250px; flex-shrink: 0; padding: 10px;">
+<body style="margin: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column;">
+    <main style="display: flex; flex-grow: 1; overflow: hidden;">
+        <aside style="width: 250px; flex-shrink: 0; padding: 10px; overflow-y: auto;">
             {% include explorer_sidebar.html %}
         </aside>
         <section style="flex-grow: 1; overflow-y: auto; padding: 10px;">
