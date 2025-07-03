@@ -1,0 +1,99 @@
+/* custom.css */
+
+/* 모든 요소에 box-sizing 적용 및 기본 스타일 초기화 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    /* 뷰포트 높이 꽉 채움 */
+    overflow: hidden;
+    /* HTML/BODY에 스크롤바 생기지 않도록 */
+    font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Windows 98 유사 폰트 계열 */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* body를 flex 컨테이너로 설정 (세로 방향) */
+}
+
+/* 전체 블로그 컨테이너 (사이드바 + 콘텐츠) */
+.blog-container {
+    display: flex;
+    /* 가로 방향으로 정렬 */
+    flex-grow: 1;
+    /* body 내에서 남은 모든 공간 차지 */
+    width: 100%;
+    /* 너비 100% */
+    overflow: hidden;
+    /* 컨테이너 자체에 스크롤바 생기지 않도록 */
+}
+
+/* 사이드바 영역 */
+.sidebar-area {
+    width: 260px;
+    /* 사이드바 고정 너비 (window margin/padding 고려) */
+    flex-shrink: 0;
+    /* 너비가 줄어들지 않도록 */
+    padding: 10px;
+    /* 컨테이너 여백 */
+    overflow-y: hidden;
+    /* 사이드바 영역 자체에 스크롤바 숨김 */
+}
+
+/* 콘텐츠 영역 */
+.content-area {
+    flex-grow: 1;
+    /* 남은 모든 수평 공간 차지 */
+    padding: 10px;
+    /* 컨테이너 여백 */
+    overflow-y: auto;
+    /* 콘텐츠가 길어질 때만 세로 스크롤바 */
+}
+
+
+/* Explorer Sidebar 내부 스타일 */
+.window {
+    width: 100%;
+    /* 부모(sidebar-area) 너비 꽉 채움 */
+    height: 100%;
+    /* 부모(sidebar-area) 높이 꽉 채움 */
+    display: flex;
+    flex-direction: column;
+    /* window 내부 요소들을 세로로 정렬 */
+    border: 1px solid #000;
+    /* 98.css window 기본 보더 확인 */
+}
+
+.window-body {
+    display: flex;
+    flex-direction: column;
+    /* window-body 내부 요소들을 세로로 정렬 */
+    flex-grow: 1;
+    /* title-bar 아래 남은 공간 모두 차지 */
+    overflow: hidden;
+    /* window-body 자체에 스크롤바 숨김 */
+}
+
+.tree-view {
+    flex-grow: 1;
+    /* status-bar 위 남은 공간 모두 차지 */
+    overflow-y: auto;
+    /* tree-view 내부에서만 스크롤바 생성 */
+    padding: 5px;
+    /* tree-view 내부 여백 */
+}
+
+.status-bar {
+    flex-shrink: 0;
+    /* 자신의 높이를 유지, 공간 양보 안 함 */
+    /* 98.css의 status-bar 기본 스타일이 적용됨 */
+}
