@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-<div class="window" style="margin-bottom: 20px;">
+<div class="window">
     <div class="title-bar">
         <div class="title-bar-text">{{ page.title }}</div>
     </div>
@@ -26,7 +26,7 @@ layout: default
         <hr class="clear-fix" style="margin: 15px 0;">
 
         <div class="post-content">
-            {{ content }} {# 포스트 파일(.md)의 실제 내용이 여기에 들어갑니다. #}
+            {{ content }}
         </div>
 
         <hr class="clear-fix" style="margin: 15px 0;">
@@ -35,7 +35,12 @@ layout: default
         </p>
     </div>
 </div>
-
+<style>
+    .post-content {
+        overflow-y: scroll;
+    }
+</style>
+<!-- 
 <style>
     .post-content {
         line-height: 1.6;
@@ -77,4 +82,4 @@ layout: default
         padding: 10px;
         margin-bottom: 1em;
     }
-</style>
+</style> -->
