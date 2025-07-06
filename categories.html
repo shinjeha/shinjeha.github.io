@@ -5,36 +5,36 @@ permalink: /categories/
 ---
 
 <div class="window" style="margin-bottom: 20px;">
-    <div class="title-bar">
-        <div class="title-bar-text">카테고리 : <span id="categoryName"></span></div>
-        <div class="title-bar-controls">
-            <button aria-label="Minimize"></button>
-            <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
-        </div>
+  <div class="title-bar">
+    <div class="title-bar-text">카테고리 : <span id="categoryName"></span></div>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize"></button>
+      <button aria-label="Maximize"></button>
+      <button aria-label="Close"></button>
     </div>
-    <div class="window-body">
-        <div class="sunken-panel">
-        <table class="interactive">
-            <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>날짜</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>aa</td>
-                    <td>bb</td>
-                </tr>
-                <tr>
-                    <td>cc</td>
-                    <td>dd</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-        <!-- {% assign categories = site.categories | sort %}
+  </div>
+  <div class="window-body">
+    <div class="sunken-panel">
+      <table class="interactive">
+        <thead>
+          <tr>
+            <th>제목</th>
+            <th>날짜</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>aa</td>
+            <td>bb</td>
+          </tr>
+          <tr>
+            <td>cc</td>
+            <td>dd</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- {% assign categories = site.categories | sort %}
     {% if categories.size > 0 %}
       <p>총 {{ categories.size }}개의 카테고리가 있습니다.</p>
       <div class="field-row" style="flex-wrap: wrap;">
@@ -67,24 +67,24 @@ permalink: /categories/
       </div>
     </div> -->
 
-        <div class="category-section" data-category="{{ category | first | slugify }}">
-            <div class="window" style="margin-top: 20px;">
-                <div class="title-bar">
-                    <div class="title-bar-text">
-                        카테고리: {{ category | first }} ({{ category | last | size }}개의 포스트)
-                    </div>
-                </div>
-                <div class="window-body">
-                    <ul style="list-style: disc; margin-left: 20px;">
-                        {% for post in category | last %}
-                        <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date:
-                                "%Y-%m-%d" }}</small></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+    <div class="category-section" data-category="{{ category | first | slugify }}">
+      <div class="window" style="margin-top: 20px;">
+        <div class="title-bar">
+          <div class="title-bar-text">
+            카테고리: {{ category | first }} ({{ category | last | size }}개의 포스트)
+          </div>
         </div>
-        <!-- {% for category in categories %}
+        <div class="window-body">
+          <ul style="list-style: disc; margin-left: 20px;">
+            {% for post in category | last %}
+            <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - <small>{{ post.date | date:
+                "%Y-%m-%d" }}</small></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- {% for category in categories %}
       <div class="category-section" data-category="{{ category | first | slugify }}" style="display: none;"> {# 초기에는 숨김 #}
         <div class="window" style="margin-top: 20px;">
           <div class="title-bar">
@@ -102,65 +102,65 @@ permalink: /categories/
         </div>
       </div>
     {% endfor %} -->
-    </div>
+  </div>
 </div>
 
 <script>
-    window.addEventListener('hashchange', function () {
-        currentHash();
-    });
+  window.addEventListener('hashchange', function () {
+    currentHash();
+  });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        currentHash();
+  document.addEventListener('DOMContentLoaded', function () {
+    currentHash();
 
-        const categoryButtons = document.querySelectorAll('.category-button');
-        const categorySections = document.querySelectorAll('.category-section');
+    const categoryButtons = document.querySelectorAll('.category-button');
+    const categorySections = document.querySelectorAll('.category-section');
 
-        function showCategory(selectedCategory) {
-            categorySections.forEach(section => {
-                if (section.dataset.category === selectedCategory || selectedCategory === 'all') {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
-                }
-            });
-        }
-
-        function setActiveButton(selectedCategory) {
-            categoryButtons.forEach(button => {
-                if (button.dataset.category === selectedCategory) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            });
-        }
-
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const selectedCategory = this.dataset.category;
-                showCategory(selectedCategory);
-                setActiveButton(selectedCategory);
-                // URL 해시 업데이트 (선택 사항, 브라우저 뒤로가기/앞으로가기 가능)
-                window.location.hash = selectedCategory;
-            });
-        });
-
-        // **이 부분이 중요합니다: 페이지 로드 시 URL 해시를 확인합니다.**
-        const initialHash = window.location.hash.substring(1); // URL에서 '#'을 제거합니다.
-        if (initialHash && Array.from(categoryButtons).some(btn => btn.dataset.category === initialHash)) {
-            // 해시값이 있고, 해당 카테고리 버튼이 존재하면 해당 카테고리를 보여줍니다.
-            showCategory(initialHash);
-            setActiveButton(initialHash);
+    function showCategory(selectedCategory) {
+      categorySections.forEach(section => {
+        if (section.dataset.category === selectedCategory || selectedCategory === 'all') {
+          section.style.display = 'block';
         } else {
-            // 해시값이 없거나 유효하지 않으면 '모든 카테고리'를 보여줍니다.
-            showCategory('all');
-            setActiveButton('all');
+          section.style.display = 'none';
         }
+      });
+    }
+
+    function setActiveButton(selectedCategory) {
+      categoryButtons.forEach(button => {
+        if (button.dataset.category === selectedCategory) {
+          button.classList.add('active');
+        } else {
+          button.classList.remove('active');
+        }
+      });
+    }
+
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const selectedCategory = this.dataset.category;
+        showCategory(selectedCategory);
+        setActiveButton(selectedCategory);
+        // URL 해시 업데이트 (선택 사항, 브라우저 뒤로가기/앞으로가기 가능)
+        window.location.hash = selectedCategory;
+      });
     });
 
-    function currentHash() {
-        const hash = window.location.hash.replaceAll('#', '');
-        document.getElementById('categoryName').innerText = hash;
+    // **이 부분이 중요합니다: 페이지 로드 시 URL 해시를 확인합니다.**
+    const initialHash = window.location.hash.substring(1); // URL에서 '#'을 제거합니다.
+    if (initialHash && Array.from(categoryButtons).some(btn => btn.dataset.category === initialHash)) {
+      // 해시값이 있고, 해당 카테고리 버튼이 존재하면 해당 카테고리를 보여줍니다.
+      showCategory(initialHash);
+      setActiveButton(initialHash);
+    } else {
+      // 해시값이 없거나 유효하지 않으면 '모든 카테고리'를 보여줍니다.
+      showCategory('all');
+      setActiveButton('all');
     }
+  });
+
+  function currentHash() {
+    const hash = window.location.hash.replaceAll('#', '');
+    document.getElementById('categoryName').innerText = hash;
+  }
 </script>
